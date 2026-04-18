@@ -28,7 +28,7 @@ app.get('/surahs', (c) => {
 
 app.get('/surahs/:id', (c) => {
   const id = Number(c.req.param('id'));
-  const surah = formatted.find((s) => s.id === id);
+  const surah = formatted.find((s:any) => s.id === id);
 
   if (!surah) {
     return c.json({ message: 'Not found' }, 404);
