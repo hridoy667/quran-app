@@ -1,19 +1,20 @@
 import { Hono } from 'hono';
-import quran from './data/quran.json';
+import quran from './data/quranwithtranslation.json';
 import { cors } from 'hono/cors';
 
 const app = new Hono();
 app.use('*', cors());
-// Transform function
+
 function transform(data: any) {
-  return Object.keys(data).map((key) => ({
-    id: Number(key),
-    name: `Surah ${key}`,
-    arabic: '',
-    ayahs: data[key].map((ayah: any) => ({
-      id: ayah.verse,
-      arabic: ayah.text,
-      translation: '',
+  return data.map((surah: any) => ({
+    id: surah.id,
+    name: surah.transliteration || `Surah ${surah.id}`,
+    arabic: surah.name,
+    translation: surah.translation || '',
+    ayahs: (surah.verses || []).map((verse: any) => ({
+      id: verse.id,
+      arabic: verse.text,
+      translation: verse.translation || '',
     })),
   }));
 }
